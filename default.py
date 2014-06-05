@@ -10,7 +10,7 @@ available).
 from lexor import init, load_aux
 
 INFO = init(
-    version=(0, 0, 1, 'final', 0),
+    version=(0, 0, 1, 'final', 1),
     lang='lexor',
     to_lang='latex',
     type='converter',
@@ -77,8 +77,10 @@ MAPPING = {
 def init_conversion(_, doc):
     """Initialiazing the conversion of a document. """
     doc.namespace['inline_ref'] = list()
+    doc.namespace['math_environ'] = list()
 
 
 def convert(converter, _):
     """Evaluate the python embeddings. """
     converter['ReferenceInlineNC'].convert()
+    converter['LatexEnvironNC'].convert()

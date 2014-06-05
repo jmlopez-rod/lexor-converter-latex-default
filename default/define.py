@@ -1,4 +1,4 @@
-"""LEXOR to HTML DEFINE NodeConverter
+"""LEXOR to LATEX DEFINE NodeConverter
 
 """
 

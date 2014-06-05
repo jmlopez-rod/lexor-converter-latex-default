@@ -1,4 +1,4 @@
-"""LEXOR to HTML LATEX NodeConverter
+"""LEXOR to LATEX NodeConverter
 
 """
 
@@ -31,7 +31,10 @@ class LatexEnvironNC(NodeConverter):
         }
 
     def end(self, node):
-        return self.handle[node.name](node)
+        new_node = self.handle[node.name](node)
+        environ = self.converter.document.namespace['math_environ']
+        environ.append([new_node, node.get('par', '')])
+        return new_node
 
     def handle_label(self, node):
         """Collect labels. """
@@ -125,6 +128,26 @@ class LatexEnvironNC(NodeConverter):
         node.parent.insert_before(node.index, newnode)
         del node.parent[node.index]
         return newnode
+
+    def convert(self):
+        """Iterate through the items in the `math_environ` list
+        and adjust them in the paragraph. """
+        environ = self.converter.document.namespace['math_environ']
+        for item, info in environ:
+            prev_ele = item.previous_element
+            next_ele = item.next_element
+            if 'begin' in info:
+                if 'end' in info:
+                    pass
+                elif next_ele is not None and next_ele.name == 'p':
+                    next_ele.insert_before(0, item)
+            elif prev_ele is not None and prev_ele.name == 'p':
+                prev_ele.append_child_node(item)
+                if 'end' in info:
+                    pass
+                elif next_ele is not None and next_ele.name == 'p':
+                    prev_ele.extend_children(next_ele)
+                    del next_ele.parent[next_ele.index]
 
 
 MSG = {
