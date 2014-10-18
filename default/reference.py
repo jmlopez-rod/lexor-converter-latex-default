@@ -17,6 +17,7 @@ REF = [
     'lst',
     'itm',
     'app',
+    'thm',
 ]
 
 

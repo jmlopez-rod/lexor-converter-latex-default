@@ -123,6 +123,8 @@ class LatexEnvironNC(NodeConverter):
                 data += '\\end{align}'
             else:
                 data += '\\end{align*}'
+        if self.wrap(node):
+            data = "\\begin{subequations}%s\end{subequations}" % data
         self.handle_label(node)
         newnode = ProcessingInstruction('?latex', data)
         node.parent.insert_before(node.index, newnode)

@@ -100,9 +100,9 @@ class MacroNC(NodeConverter):
     @classmethod
     def handle_braces(cls, char, text, index):
         """Helper function for handle_token. """
-        if char in '([' and text[index-5:index] != '\\left':
+        if char in '(' and text[index-5:index] != '\\left':
             return '\\left' + char
-        elif char in ')]' and text[index-6:index] != '\\right':
+        elif char in ')' and text[index-6:index] != '\\right':
             return '\\right' + char
         return char
 

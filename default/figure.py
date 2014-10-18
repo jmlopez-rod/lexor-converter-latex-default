@@ -25,9 +25,17 @@ class FigureNC(NodeConverter):
             del node['id']
         caption.extend_children(node)
         if 'src' in node:
-            image = core.Void('includegraphics')
-            image['args'] = node['src']
-            image['width'] = '5.97in'
+            if '.tex' in node['src']:
+                image = core.Void('input')
+                image['args'] = node['src']
+            else:
+                image = core.Void('includegraphics')
+                image['args'] = node['src']
+                if 'width' in node:
+                    image['width'] = node['width']
+                    del node['width']
+                else:
+                    image['width'] = '5.97in'
             del node['src']
             center.append_child(image)
         node.append_child(center)
